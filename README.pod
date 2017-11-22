@@ -1,0 +1,136 @@
+=encoding UTF-8
+
+=head1 GitHub
+
+B<Hosted on GitHub>, please see L<https://github.com/paveljurca/installed>.
+
+=cut
+
+=head2 Installed
+
+Scan given PCs for installed SW.
+
+Dependency:
+
+Download PsExec and put it in the same folder or in your %PATH%.
+
+
+Why? In network installations you often don't know whether the SW is really there. Useful in big environments like school so students don't brag about missing shortcut on the desktop or even the program itself.
+
+wrapper around PsExec to test for arbitrary path on a remote system, i.e. pushing installation packages in WINDOWS domain
+make sure that EXE, shortcut or folder is there
+
+EXEs, desktop shortcuts, folders
+=> test for the directory is NON empty
+
+NOTE_TO_SELF:
+"If you omit the computer name, PsExec runs the application on the local system"
+
+
+!!!!!!!!!! for check on network drives needs to be present "-u" and "-p" parameters, i.e. type login explicitly
+
+=cut
+
+=head3 Description
+
+it does it with F<dir> command
+
+Uses CSV definition file of programs, 
+
+
+you may alter the script to basically run remotely anything 
+
+for example F<msiexec.exe> to unistall old SW packages
+
+
+C<PsExec64.exe \\pc004 msiexec.exe /q /x{3BC0A685-E309-4C51-9D48-9C0632C6DADF}>
+
+Whereas the GUIDs come out of the Registry C<Unistall> subkey
+
+https://superuser.com/questions/220637/where-are-product-uninstall-keys-located-in-the-registry-under-windows-7-x64
+
+=cut
+
+=head3 Installation
+
+B<WINDOWS> version (executable)
+
+check-list:
+
+=over
+
+=item *
+File and Printer Sharing enabled
+
+=item *
+C<browser>, C<server>, C<lmhosts> and C<lanmanworkstation> services running
+
+=item *
+Default I<Admin$> share enabled
+
+=item *
+Remote UAC I<LocalAccountTokenFilterPolicy> enabled
+
+=item *
+Local administrative privileges on the remote system (look at F<cmdkey.exe>)
+
+=item *
+L<https://stackoverflow.com/questions/828432/psexec-access-denied-errors>
+
+=back
+
+=cut
+
+=head3 Caveat
+
+B<PsExec> L<https://technet.microsoft.com/en-us/sysinternals/pxexec.aspx> can not be distributed just downloaded,
+consider B<PAExec> L<https://github.com/poweradminllc/PAExec>
+
+=over
+
+=item *
+L<does NOT sends passwords in clear text as of v2.1|https://blogs.technet.microsoft.com/sysinternals/2014/03/07/updates-process-explorer-v16-02-process-monitor-v3-1-psexec-v2-1-sigcheck-v2-03/>
+
+=item *
+starts the PSEXESVC service on the remote system (might need to kill it with F<sc.exe> or F<pskill.exe>)
+
+=item *
+L<http://windowsitpro.com/systems-management/psexec>
+
+=item *
+L<FAQ|https://forum.sysinternals.com/faq-common-pstools-issues_topic15920.html>
+
+=back
+
+=cut
+
+=head3 TODO
+
+B<Can look for files and get its remote filepath>
+
+C<system(qw(where /r "%ProgramFiles(x86)%" /q), 'winword.exe') or say "winword.exe OK">
+
+C<my @whereis = split /\r?\n/, qx(where /r "%SystemDrive%" $exe 2>NUL:); say $? >> 8 == 0 ? "found" : "not found" >
+
+=over
+
+=item *
+support for multiple values testing; delimited by L<[space]> and/or L<[comma]> or use L<[asterisk]> for all
+
+=item *
+can use names and/or numbers
+
+=item *
+command-line invocation
+
+=back
+
+=cut
+
+=head3 License
+
+L<Perl|perlartistic>
+
+Released into the public domain.
+
+=cut
