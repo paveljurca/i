@@ -1,6 +1,6 @@
 =encoding UTF-8
 
-=head1 GitHub
+=head1 [WORK IN PROGRESS, 2017/11/24]
 
 B<Hosted on GitHub>, please see L<https://github.com/paveljurca/installed>.
 
