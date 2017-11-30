@@ -1,18 +1,21 @@
 =encoding UTF-8
 
-=head1 [WORK IN PROGRESS, 2017/11/24]
+=head1 i
 
-B<Hosted on GitHub>, please see L<https://github.com/paveljurca/installed>.
+B<Hosted on GitHub>, please see L<https://github.com/paveljurca/i>.
 
 =cut
 
-=head2 Installed
+=head2 SYNOPSIS
 
-Scan given PCs for installed SW.
+Remote IF EXIST
 
-Dependency:
+`i.exe > exist.txt`
 
-Download PsExec and put it in the same folder or in your %PATH%.
+__Dependency:__
+
+PsExec
+
 
 
 Why? In network installations you often don't know whether the SW is really there. Useful in big environments like school so students don't brag about missing shortcut on the desktop or even the program itself.
@@ -21,13 +24,11 @@ wrapper around PsExec to test for arbitrary path on a remote system, i.e. pushin
 make sure that EXE, shortcut or folder is there
 
 EXEs, desktop shortcuts, folders
-=> test for the directory is NON empty
 
-NOTE_TO_SELF:
-"If you omit the computer name, PsExec runs the application on the local system"
+TODO: 
 
-
-!!!!!!!!!! for check on network drives needs to be present "-u" and "-p" parameters, i.e. type login explicitly
+- [ ] sort ascending
+- [ ] directory is NON empty
 
 =cut
 
@@ -129,8 +130,12 @@ command-line invocation
 
 =head3 License
 
-L<Perl|perlartistic>
-
 Released into the public domain.
+
+=cut
+
+=head3 Disclaimer
+
+Don't blame me.
 
 =cut
