@@ -1,5 +1,3 @@
-use 5.016;
-
 use strict;
 use warnings;
 use open qw(:std :utf8);
@@ -8,19 +6,19 @@ use utf8;
 use File::Basename;
 use File::Spec::Functions;
 
-print<<'EOL';
-*****************
-(JM) SW na učebně
-
-v0.1, Pavel Jurca
-*****************
-
-EOL
+#print<<'EOL';
+#*****************
+#(JM) SW na učebně
+#
+#v0.1, Pavel Jurca
+#*****************
+#
+#EOL
 
 #========= MAIN ===========
 
 # base dir
-my $root = catdir(dirname($0), 'i');
+my $root = catdir(dirname($0));
 
 i();
 
@@ -38,16 +36,16 @@ sub i {
   for my $pc (1..$$room[1]) {
     my $hostname = qq($$room[0]h) . sprintf "%02d", $pc;
 
-    printf " %-10s | %-20s | %s\n",
+    printf "%-10s | %-20s | %s\n",
       $hostname,
-      $program->[1],
-      ""#$psexec($hostname, $program->{path})
+      $$program[1],
+      psexec($hostname, $$program[1])
     ;
   }
 }
 
 sub sudo {
-  open my $sudo, '>', catpath($ENV{SYSTEMDRIVE}, 'whoami.tmp');
+  open my $sudo, '>', catfile($ENV{SYSTEMDRIVE}, 'whoami.tmp');
 }
 
 sub psexec {
@@ -58,23 +56,27 @@ sub psexec {
   my $file    = shift;
   my $timeout = 5;
 
+  # in which case add also the -u (USER) and -p (PASSWORD) params
   my $runas = {
       admin => '-h', # elevated (Vista or higher)
       user  => '-l', # running with least privilege
     default => '',
   };
-  my %SIG = {
+
+  # exit code
+  my %SIG = (
     0   => 'OK',
-    69  => 'chybí (!)',
-    53  => 'vypnuté PC',
+    1   => 'chybí (!)',
+    180 => 'vypnuté PC',
     3   => 'zamítnuto',
-  };
+  );
 
   system catfile($root, 'PsExec.exe'),
       qq(\\\\$remote),
       qw(-accepteula -nobanner -n),
-      $timeout, $runas->{default},
-      qw(cmd /Q /C dir /a:), qq("$file"), qw(>NUL: 2>&1);
+      $timeout,
+      qw(cmd /Q /C "dir /a:), qq(""$file""), qw(>NUL: 2>NUL:")
+  ;
 
   my $sig = $? >> 8;
   error("PsExec chybí: $!") if ($? == -1);
