@@ -42,6 +42,11 @@ Run `i.exe >installed.txt` as Administrator
 
 [v0.1.0](https://github.com/paveljurca/i/releases/tag/v0.1.0)
 
+## NOTES
+
+* If you omit the computer name PsExec runs the application on the local system
+* For network drives login explicitly, i.e. `-u [user] -p [password]` options
+
 ## RELEASE NOTES
 
 * PsExec does NOT send passwords in clear text as of v2.1, see <https://blogs.technet.microsoft.com/sysinternals/2014/03/07/updates-process-explorer-v16-02-process-monitor-v3-1-psexec-v2-1-sigcheck-v2-03/>
